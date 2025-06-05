@@ -1,3 +1,9 @@
+#### 1.0.2 (2025-06-05)
+
+##### Bug Fixes
+
+*  npx cli ([886fc071](https://github.com/JointlyTech/gen-ts-from-wsdl/commit/886fc0714b0fd6df6dd97174cf9d63965f4420e7))
+
 #### 1.0.1 (2025-06-05)
 
 ##### Bug Fixes
