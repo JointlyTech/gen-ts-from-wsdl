@@ -1,3 +1,9 @@
+#### 1.0.1 (2025-06-05)
+
+##### Bug Fixes
+
+*  update module imports to use .js extensions and adjust TypeScript configuration ([819f04e4](https://github.com/JointlyTech/gen-ts-from-wsdl/commit/819f04e4247201a29d489d7003a1e14731daee4e))
+
 ## 1.0.0 (2025-06-05)
 
 ##### New Features
