@@ -1,74 +1,233 @@
-# What is this?
+# @jointly/gen-ts-from-wsdl
 
-A simple scaffolding tool for creating a new project to be published to npm.  
-It provides a build command that will compile your code to a CommonJS Node 14.16 target, allowing named imports for CommonJS packages inside ESM files.  
-The package contains a simple "hello world" based on TypeScript, built on esbuild, tested through Jest and linted with ESLint and Prettier.  
-It also provides a Husky pre-commit hook to run some linting based on prettier and eslint and run tests, so you can simple `git add` and `git commit` without worrying about anything else.
+[![npm version](https://badge.fury.io/js/@jointly%2Fgen-ts-from-wsdl.svg)](https://badge.fury.io/js/@jointly%2Fgen-ts-from-wsdl)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-## How To Install?
+A powerful command-line tool and Node.js library to generate TypeScript interfaces and types from WSDL (Web Services Description Language) files for SOAP services.
+
+## Features
+
+- 🔄 **WSDL Parsing**: Parse WSDL files from local paths or URLs
+- 📝 **TypeScript Generation**: Generate clean, typed TypeScript interfaces
+- 🏗️ **Complex Types Support**: Handle complex XML Schema types and nested structures
+- 🎯 **Simple Types Support**: Convert XML Schema simple types with restrictions
+- 📨 **Message Types**: Generate types for SOAP messages
+- ⚙️ **Operation Interfaces**: Optional generation of service operation interfaces
+- 📦 **Namespace Support**: Organize generated types with custom namespaces
+- 🔧 **CLI & Programmatic**: Use as a command-line tool or Node.js library
+
+## Installation
+
+### Global Installation (CLI)
 
 ```bash
-git clone git://github.com/JointlyTech/npm-package-ts-scaffolding.git package_name
-cd package_name
+npm install -g @jointly/gen-ts-from-wsdl
+```
+
+### Local Installation (Project Dependency)
+
+```bash
+npm install @jointly/gen-ts-from-wsdl
+```
+
+```bash
+yarn add @jointly/gen-ts-from-wsdl
+```
+
+## Usage
+
+### Command Line Interface
+
+#### Using npx (No Installation Required)
+
+You can run the tool directly without installing it globally using `npx`:
+
+```bash
+npx @jointly/gen-ts-from-wsdl <wsdl-file-or-url> [options]
+```
+
+##### npx Examples
+
+```bash
+# Generate types from a local WSDL file
+npx @jointly/gen-ts-from-wsdl ./service.wsdl
+
+# Generate types from a URL with custom output
+npx @jointly/gen-ts-from-wsdl https://example.com/service.wsdl -o ./types/soap-api.ts
+
+# Generate with namespace and operations
+npx @jointly/gen-ts-from-wsdl ./service.wsdl -n ApiTypes --include-operations
+```
+
+#### Basic Usage (Global Installation)
+
+```bash
+gen-ts-from-wsdl <wsdl-file-or-url> [options]
+```
+
+#### Examples
+
+```bash
+# Generate types from a local WSDL file
+gen-ts-from-wsdl ./service.wsdl
+
+# Generate types from a URL
+gen-ts-from-wsdl https://example.com/service.wsdl
+
+# Specify custom output file
+gen-ts-from-wsdl ./service.wsdl -o ./generated/soap-types.ts
+
+# Add namespace and include operations
+gen-ts-from-wsdl ./service.wsdl -n MyService --include-operations
+
+# Disable code prettification
+gen-ts-from-wsdl ./service.wsdl --no-prettify
+```
+
+#### CLI Options
+
+| Option | Alias | Description | Default |
+|--------|-------|-------------|---------|
+| `--output` | `-o` | Output file path | `./types.ts` |
+| `--namespace` | `-n` | Namespace for generated types | (none) |
+| `--include-operations` | | Include operation interfaces | `false` |
+| `--no-prettify` | | Disable code prettification | `false` |
+
+### Programmatic Usage
+
+```typescript
+import { WSDLParser, TypeScriptGenerator, GeneratorOptions } from '@jointly/gen-ts-from-wsdl';
+
+async function generateTypes() {
+  const parser = new WSDLParser();
+  const generator = new TypeScriptGenerator();
+
+  // Parse WSDL
+  const parsedWSDL = await parser.parseWSDL('./service.wsdl');
+
+  // Configure generation options
+  const options: GeneratorOptions = {
+    outputPath: './generated-types.ts',
+    namespace: 'MyServiceTypes',
+    includeOperations: true,
+    prettify: true,
+  };
+
+  // Generate TypeScript types
+  await generator.writeTypesToFile(parsedWSDL, './generated-types.ts', options);
+}
+
+generateTypes().catch(console.error);
+```
+
+## Generated Output
+
+The tool generates TypeScript interfaces based on the WSDL schema definitions:
+
+### Complex Types
+```typescript
+export interface UserInfo {
+  id: number;
+  name: string;
+  email?: string;
+  roles: string[];
+}
+```
+
+### Simple Types with Restrictions
+```typescript
+export type UserStatus = 'active' | 'inactive' | 'pending';
+
+export type UserId = string; // Pattern: /^[A-Z]{2}\d{6}$/
+```
+
+### Message Types
+```typescript
+export interface GetUserRequest {
+  userId: string;
+}
+
+export interface GetUserResponse {
+  user: UserInfo;
+  success: boolean;
+}
+```
+
+### Operation Interfaces (Optional)
+```typescript
+export interface UserServiceOperations {
+  GetUser(request: GetUserRequest): Promise<GetUserResponse>;
+  UpdateUser(request: UpdateUserRequest): Promise<UpdateUserResponse>;
+}
+```
+
+## Configuration
+
+### Generator Options
+
+```typescript
+interface GeneratorOptions {
+  outputPath: string;           // Output file path
+  namespace?: string;           // Optional namespace wrapper
+  includeOperations?: boolean;  // Include operation interfaces
+  prettify?: boolean;          // Format generated code
+}
+```
+
+## Development
+
+### Prerequisites
+
+- Node.js 18+ 
+- npm or yarn
+
+### Setup
+
+```bash
+# Clone the repository
+git clone https://github.com/JointlyTech/gen-ts-from-wsdl.git
+cd gen-ts-from-wsdl
+
+# Install dependencies
 npm install
-npx husky install
-```
 
-## What do you mean by `allowing named imports from CommonJS`?
+# Build the project
+npm run build
 
-If you try to run `npm run build` you will be able to import the `sayHello` function from the `index.js` file, both via `require` and `import` syntax.
-
-### Importing via `require`
-
-```js
-const { sayHello } = require('my-package');
-```
-
-### Importing via `import`
-
-```js
-import { sayHello } from 'my-package';
-```
-
-# Why did you build it?
-
-I got tired of copying and pasting the same files over and over again.  
-This is a simple tool to create a new project with the basic files needed to publish to npm.
-
-# How can I personalize it?
-
-You can change the `package.json` file to your liking, bringing your own package name and description.  
-Please, remember to give me a star if you like the project!
-
-# What's Inside?
-
-- Typescript
-- Jest
-- Eslint
-- Prettier
-- Husky
-- Esbuild
-- Commitlint
-
-# How to push and release an update?
-
-```bash
-git add --all
-git commit -m "chore: update package"
-npm run release:patch
-```
-
-Remember to follow the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) standard.
-You can substitute `patch` with `minor` or `major` to update the version accordingly.
-
-# How to run tests?
-
-```bash
+# Run tests
 npm test
+
+# Development mode with auto-rebuild
+npm run dev
 ```
 
-# Contributing
+### Scripts
 
-If you want to contribute to this project, please open an issue or a pull request.  
-I will be happy to review it and merge it if it's useful.  
-Please, remember to follow the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) standard.  
+- `npm run build` - Compile TypeScript to JavaScript
+- `npm run dev` - Run in development mode with ts-node
+- `npm test` - Run Jest tests
+- `npm start` - Run the compiled CLI tool
+- `npm run release:patch|minor|major` - Release new version
+
+## Contributing
+
+We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.md) for details.
+
+### Contributors
+
+- **Pellegrino Durante** - [@PellegrinoDurante](https://github.com/PellegrinoDurante)
+- **Luigi Colombi** - [@Gigiz](https://github.com/Gigiz)
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Support
+
+- 🐛 **Bug Reports**: [GitHub Issues](https://github.com/JointlyTech/gen-ts-from-wsdl/issues)
+- 💬 **Discussions**: [GitHub Discussions](https://github.com/JointlyTech/gen-ts-from-wsdl/discussions)
+- 📧 **Email**: dev@jointly.pro
+
+---
+
+Made with ❤️ by [Jointly](https://www.jointly.pro)

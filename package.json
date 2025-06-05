@@ -1,11 +1,13 @@
 {
-  "name": "npm-package-ts-scaffolding",
-  "description": "A scaffolding for npm packages written in TypeScript",
+  "name": "@jointly/gen-ts-from-wsdl",
+  "description": "A command-line tool to generate TypeScript interfaces from WSDL files for SOAP services",
   "private": false,
-  "version": "0.0.1",
+  "version": "1.0.0",
   "main": "dist/index.js",
   "module": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "bin": {
+    "gen-ts-from-wsdl": "dist/index.js"
+  },
   "files": [
     "dist"
   ],
@@ -17,37 +19,40 @@
     "./package.json": "./package.json"
   },
   "scripts": {
-    "ts-types": "tsc --emitDeclarationOnly",
-    "check": "npm run prettier && npm run lint && npm test",
-    "build": "npm run check && rimraf dist && NODE_ENV=production node esbuild.js && npm run ts-types",
-    "prettier": "prettier --write ./src",
-    "lint": "eslint ./src --ext .ts",
-    "dev": "jest --watch",
-    "test": "jest --no-cache",
-    "coverage": "jest --coverage",
+    "build": "tsc",
+    "prepublishOnly": "npm run build",
+    "start": "node dist/index.js",
+    "dev": "ts-node src/index.ts",
+    "test": "jest",
     "release:common": "npm run build && git push --follow-tags origin main && npm publish --access public",
     "release:patch": "changelog -p && git add CHANGELOG.md && git commit -m 'docs: updated changelog' && npm version patch && npm run release:common",
     "release:minor": "changelog -m && git add CHANGELOG.md && git commit -m 'docs: updated changelog' && npm version minor && npm run release:common",
     "release:major": "changelog -M && git add CHANGELOG.md && git commit -m 'docs: updated changelog' && npm version major && npm run release:common"
   },
-  "prepublish": "npm run build",
+  "dependencies": {
+    "axios": "^1.6.0",
+    "commander": "^11.1.0",
+    "xml2js": "^0.6.2"
+  },
   "devDependencies": {
     "@commitlint/cli": "^17.3.0",
     "@commitlint/config-conventional": "^17.3.0",
-    "@types/jest": "^29.2.4",
-    "@types/node": "^18.11.12",
+    "@types/jest": "^29.5.0",
+    "@types/node": "^20.10.0",
+    "@types/xml2js": "^0.4.14",
     "@typescript-eslint/eslint-plugin": "^5.46.0",
     "@typescript-eslint/parser": "^5.46.0",
     "esbuild": "^0.16.4",
     "eslint": "^8.29.0",
     "generate-changelog": "^1.8.0",
     "husky": "^8.0.2",
-    "jest": "^29.3.1",
+    "jest": "^29.7.0",
     "lint-staged": "^13.1.0",
     "prettier": "^2.8.1",
     "rimraf": "^3.0.2",
-    "ts-jest": "^29.0.3",
-    "typescript": "^4.9.4"
+    "ts-jest": "^29.1.0",
+    "ts-node": "^10.9.0",
+    "typescript": "^5.3.0"
   },
   "lint-staged": {
     "src/**/*.{js,jsx,ts,tsx}": [
@@ -55,16 +60,38 @@
       "npx eslint --fix"
     ]
   },
+  "keywords": [
+    "wsdl",
+    "typescript",
+    "soap",
+    "types",
+    "generator",
+    "web-services",
+    "xml",
+    "code-generation",
+    "cli",
+    "npm"
+  ],
+  "author": "Jointly <dev@jointly.pro>",
+  "contributors": [
+    {
+      "name": "Pellegrino Durante",
+      "email": "pellegrino.durante@gmail.com",
+      "url": "https://github.com/PellegrinoDurante"
+    },
+    {
+      "name": "Luigi Colombi",
+      "email": "lucolombi89@gmail.com",
+      "url": "https://github.com/Gigiz"
+    }
+  ],
+  "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git://github.com/JointlyTech/npm-package-ts-scaffolding.git"
+    "url": "https://github.com/JointlyTech/gen-ts-from-wsdl"
   },
-  "license": "MIT",
-  "author": "Michael Di Prisco <cadienvan@gmail.com>",
-  "keywords": [
-    "npm",
-    "package",
-    "typescript",
-    "scaffolding"
-  ]
+  "homepage": "https://github.com/JointlyTech/gen-ts-from-wsdl#readme",
+  "bugs": {
+    "url": "https://github.com/JointlyTech/gen-ts-from-wsdl/issues"
+  }
 }
