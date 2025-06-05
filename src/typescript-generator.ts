@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import { ParsedWSDL, WSDLComplexType, WSDLSimpleType, WSDLElement, WSDLMessage, GeneratorOptions } from './types';
+import { ParsedWSDL, WSDLComplexType, WSDLSimpleType, WSDLElement, WSDLMessage, GeneratorOptions } from './types.js';
 
 export class TypeScriptGenerator {
   private typeMapping: Map<string, string> = new Map([

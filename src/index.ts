@@ -2,9 +2,9 @@
 
 import { Command } from 'commander';
 import * as path from 'path';
-import { WSDLParser } from './wsdl-parser';
-import { TypeScriptGenerator } from './typescript-generator';
-import { GeneratorOptions } from './types';
+import { WSDLParser } from './wsdl-parser.js';
+import { TypeScriptGenerator } from './typescript-generator.js';
+import { GeneratorOptions } from './types.js';
 
 const program = new Command();
 
@@ -55,11 +55,15 @@ program
   });
 
 // Export classes for programmatic use
-export { WSDLParser } from './wsdl-parser';
-export { TypeScriptGenerator } from './typescript-generator';
-export * from './types';
+export { WSDLParser } from './wsdl-parser.js';
+export { TypeScriptGenerator } from './typescript-generator.js';
+export * from './types.js';
 
 // Run CLI if called directly
-if (require.main === module) {
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+
+if (process.argv[1] === __filename) {
   program.parse();
 }

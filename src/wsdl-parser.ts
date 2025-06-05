@@ -1,8 +1,7 @@
 import * as xml2js from 'xml2js';
 import axios from 'axios';
 import * as fs from 'fs';
-import * as path from 'path';
-import { ParsedWSDL, WSDLComplexType, WSDLSimpleType, WSDLMessage, WSDLPortType, WSDLElement, WSDLAttribute } from './types';
+import { ParsedWSDL, WSDLComplexType, WSDLSimpleType, WSDLMessage, WSDLPortType, WSDLElement, WSDLAttribute } from './types.js';
 
 export class WSDLParser {
   private namespaces: Map<string, string> = new Map();
