@@ -7,7 +7,7 @@
   "main": "dist/index.js",
   "module": "dist/index.js",
   "bin": {
-    "gen-ts-from-wsdl": "dist/index.js"
+    "gen-ts-from-wsdl": "dist/cli.js"
   },
   "files": [
     "dist"
