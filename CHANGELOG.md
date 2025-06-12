@@ -1,3 +1,17 @@
+#### 1.0.3 (2025-06-12)
+
+##### Chores
+
+*  update Node.js versions in CI workflow ([1e606ece](https://github.com/JointlyTech/gen-ts-from-wsdl/commit/1e606eced9975115a0445b870e6aae2907ef4d81))
+
+##### Bug Fixes
+
+*  update SOAP array type handling ([528144ce](https://github.com/JointlyTech/gen-ts-from-wsdl/commit/528144ceee6395682b2f29f4cca550b7c89dab47))
+
+##### Refactors
+
+*  migrate from tsc to tsup and clean up structure ([34d1b366](https://github.com/JointlyTech/gen-ts-from-wsdl/commit/34d1b366241e50f4638ebb3fb5f5428462ea82ee))
+
 #### 1.0.2 (2025-06-05)
 
 ##### Bug Fixes
