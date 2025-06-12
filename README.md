@@ -194,19 +194,19 @@ npm install
 # Build the project
 npm run build
 
-# Run tests
-npm test
+# Execute the CLI
+npm run start
 
-# Development mode with auto-rebuild
+# Or build and start
 npm run dev
 ```
 
 ### Scripts
 
 - `npm run build` - Compile TypeScript to JavaScript
-- `npm run dev` - Run in development mode with ts-node
-- `npm test` - Run Jest tests
-- `npm start` - Run the compiled CLI tool
+- `npm run start` - Run the compiled CLI tool
+- `npm run dev` - Compile and run the CLI
+
 - `npm run release:patch|minor|major` - Release new version
 
 ## Contributing
