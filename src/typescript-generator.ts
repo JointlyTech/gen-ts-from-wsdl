@@ -142,7 +142,9 @@ export class TypeScriptGenerator {
     // Handle SOAP array types
     if (complexType.soapArrayType) {
       const elementType = this.mapXmlTypeToTypeScript(complexType.soapArrayType);
-      lines.push(`export type ${interfaceName} = ${elementType}[];`);
+      lines.push(`export interface ${interfaceName} {`);
+      lines.push(`  element: ${elementType}[];`);
+      lines.push(`}`);
       return lines;
     }
     
