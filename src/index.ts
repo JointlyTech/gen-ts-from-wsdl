@@ -1,4 +1,4 @@
 // Export classes for programmatic use
-export { WSDLParser } from './wsdl-parser.js';
-export { TypeScriptGenerator } from './typescript-generator.js';
-export * from './types.js';
+export { WSDLParser } from './wsdl-parser';
+export { TypeScriptGenerator } from './typescript-generator';
+export * from './types';

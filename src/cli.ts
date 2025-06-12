@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 
 import { Command } from 'commander';
-import { WSDLParser } from './wsdl-parser.js';
-import { TypeScriptGenerator } from './typescript-generator.js';
-import { GeneratorOptions } from './types.js';
+import { WSDLParser } from './wsdl-parser';
+import { TypeScriptGenerator } from './typescript-generator';
+import { GeneratorOptions } from './types';
 
 const program = new Command();
 
