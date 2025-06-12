@@ -142,9 +142,7 @@ export class TypeScriptGenerator {
     // Handle SOAP array types
     if (complexType.soapArrayType) {
       const elementType = this.mapXmlTypeToTypeScript(complexType.soapArrayType);
-      lines.push(`export interface ${interfaceName} {`);
-      lines.push(`  element: ${elementType}[];`);
-      lines.push(`}`);
+      lines.push(`export type ${interfaceName} = ${elementType}[];`);
       return lines;
     }
     
@@ -152,7 +150,7 @@ export class TypeScriptGenerator {
     
     // Generate properties from elements
     complexType.elements.forEach(element => {
-      const propertyName = this.toCamelCase(element.name);
+      const propertyName = element.name;
       const propertyType = this.mapXmlTypeToTypeScript(element.type);
       const isOptional = element.minOccurs === '0' || element.nillable;
       const isArray = element.maxOccurs === 'unbounded' || (element.maxOccurs && parseInt(element.maxOccurs) > 1);
