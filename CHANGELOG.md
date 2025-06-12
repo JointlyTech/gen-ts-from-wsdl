@@ -1,3 +1,13 @@
+#### 1.0.4 (2025-06-12)
+
+##### Documentation Changes
+
+*  update README to clarify CLI execution and script commands ([0a6eae4c](https://github.com/JointlyTech/gen-ts-from-wsdl/commit/0a6eae4c26baf8ec7c5866f4d74a14a95dbba46a))
+
+##### Bug Fixes
+
+*  revert changes for handling SOAP array types and fix case for type's properties ([b4044f81](https://github.com/JointlyTech/gen-ts-from-wsdl/commit/b4044f819a7317f5a346856aab926d736ff93bb5))
+
 #### 1.0.3 (2025-06-12)
 
 ##### Chores
