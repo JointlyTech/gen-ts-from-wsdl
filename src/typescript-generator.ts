@@ -49,7 +49,7 @@ export class TypeScriptGenerator {
     if (parsedWSDL.complexTypes.length > 0) {
       lines.push('// Complex Types');
       parsedWSDL.complexTypes.forEach(complexType => {
-        lines.push(...this.generateComplexType(complexType));
+        lines.push(...this.generateComplexType(complexType, options));
         lines.push('');
       });
     }
@@ -67,7 +67,7 @@ export class TypeScriptGenerator {
     if (parsedWSDL.messages.length > 0) {
       lines.push('// Message Types');
       parsedWSDL.messages.forEach(message => {
-        lines.push(...this.generateMessageType(message, parsedWSDL));
+        lines.push(...this.generateMessageType(message, parsedWSDL, options));
         lines.push('');
       });
     }
@@ -135,7 +135,7 @@ export class TypeScriptGenerator {
     return lines;
   }
 
-  private generateComplexType(complexType: WSDLComplexType): string[] {
+  private generateComplexType(complexType: WSDLComplexType, options: GeneratorOptions = {}): string[] {
     const lines: string[] = [];
     const interfaceName = this.toPascalCase(complexType.name);
     
@@ -152,7 +152,13 @@ export class TypeScriptGenerator {
     complexType.elements.forEach(element => {
       const propertyName = element.name;
       const propertyType = this.mapXmlTypeToTypeScript(element.type);
-      const isOptional = element.minOccurs === '0' || element.nillable;
+      
+      // In strict mode, only explicit minOccurs="0" or nillable makes a field optional
+      // In non-strict mode, fields without explicit minOccurs are also optional
+      const isOptional = options.strict 
+        ? (element.minOccurs === '0' || element.nillable)
+        : (element.minOccurs === '0' || element.nillable || element.minOccurs === undefined);
+        
       const isArray = element.maxOccurs === 'unbounded' || (element.maxOccurs && parseInt(element.maxOccurs) > 1);
       
       let finalType = propertyType;
@@ -202,14 +208,14 @@ export class TypeScriptGenerator {
     return lines;
   }
 
-  private generateMessageType(message: WSDLMessage, parsedWSDL: ParsedWSDL): string[] {
+  private generateMessageType(message: WSDLMessage, parsedWSDL: ParsedWSDL, options: GeneratorOptions = {}): string[] {
     const lines: string[] = [];
     const interfaceName = this.toPascalCase(message.name);
     
     lines.push(`export interface ${interfaceName} {`);
     
     message.parts.forEach(part => {
-      const propertyName = this.toCamelCase(part.name);
+      const propertyName = part.name;
       let propertyType = 'any';
       
       if (part.element) {
@@ -224,8 +230,12 @@ export class TypeScriptGenerator {
       } else if (part.type) {
         propertyType = this.mapXmlTypeToTypeScript(part.type);
       }
-      
-      lines.push(`  ${propertyName}: ${propertyType};`);
+
+      // In strict mode, all parts are required
+      const isOptional = !options.strict;
+      const optionalMarker = isOptional ? '?' : '';
+
+      lines.push(`  ${propertyName}${optionalMarker}: ${propertyType};`);
     });
     
     lines.push('}');

@@ -72,4 +72,5 @@ export interface GeneratorOptions {
   namespace?: string;
   includeOperations?: boolean;
   prettify?: boolean;
+  strict?: boolean;
 }

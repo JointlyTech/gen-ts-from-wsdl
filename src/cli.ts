@@ -18,6 +18,7 @@ program
   .option('-n, --namespace <namespace>', 'namespace for generated types')
   .option('--include-operations', 'include operation interfaces', false)
   .option('--no-prettify', 'disable code prettification')
+  .option('--strict', 'enable strict mode for optional properties', false)
   .action(async (wsdlSource: string, options: any) => {
     try {
       console.log('🚀 Starting WSDL to TypeScript generation...');
@@ -40,6 +41,7 @@ program
         namespace: options.namespace,
         includeOperations: options.includeOperations,
         prettify: options.prettify !== false,
+        strict: options.strict,
       };
       
       console.log('🔧 Generating TypeScript types...');

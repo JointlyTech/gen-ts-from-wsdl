@@ -57,6 +57,9 @@ npx @jointly/gen-ts-from-wsdl https://example.com/service.wsdl -o ./types/soap-a
 
 # Generate with namespace and operations
 npx @jointly/gen-ts-from-wsdl ./service.wsdl -n ApiTypes --include-operations
+
+# Generate with strict mode for optional properties
+npx @jointly/gen-ts-from-wsdl ./service.wsdl --strict
 ```
 
 #### Basic Usage (Global Installation)
@@ -80,6 +83,9 @@ gen-ts-from-wsdl ./service.wsdl -o ./generated/soap-types.ts
 # Add namespace and include operations
 gen-ts-from-wsdl ./service.wsdl -n MyService --include-operations
 
+# Enable strict mode for optional properties
+gen-ts-from-wsdl ./service.wsdl --strict
+
 # Disable code prettification
 gen-ts-from-wsdl ./service.wsdl --no-prettify
 ```
@@ -91,6 +97,7 @@ gen-ts-from-wsdl ./service.wsdl --no-prettify
 | `--output` | `-o` | Output file path | `./types.ts` |
 | `--namespace` | `-n` | Namespace for generated types | (none) |
 | `--include-operations` | | Include operation interfaces | `false` |
+| `--strict` | | Enable strict mode for optional properties | `false` |
 | `--no-prettify` | | Disable code prettification | `false` |
 
 ### Programmatic Usage
@@ -170,6 +177,7 @@ interface GeneratorOptions {
   outputPath: string;           // Output file path
   namespace?: string;           // Optional namespace wrapper
   includeOperations?: boolean;  // Include operation interfaces
+  strict?: boolean;            // Enable strict mode for optional properties
   prettify?: boolean;          // Format generated code
 }
 ```
