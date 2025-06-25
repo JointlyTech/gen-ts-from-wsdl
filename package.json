@@ -2,7 +2,7 @@
   "name": "@jointly/gen-ts-from-wsdl",
   "description": "A command-line tool to generate TypeScript interfaces from WSDL files for SOAP services",
   "private": false,
-  "version": "1.0.4",
+  "version": "1.1.0",
   "type": "module",
   "main": "dist/index.js",
   "module": "dist/index.js",
