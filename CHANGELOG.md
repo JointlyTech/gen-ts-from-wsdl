@@ -1,3 +1,9 @@
+### 1.1.0 (2025-06-25)
+
+##### New Features
+
+*  add strict mode option for optional properties in TypeScript generation ([bb73c9cb](https://github.com/JointlyTech/gen-ts-from-wsdl/commit/bb73c9cbf94fcdd3383c818d2d53f595c92fb412))
+
 #### 1.0.4 (2025-06-12)
 
 ##### Documentation Changes
